@@ -1,8 +1,12 @@
 package secrets
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/99designs/keyring"
 )
@@ -20,17 +24,43 @@ type KeyringStore struct {
 }
 
 func NewKeyringStore() (*KeyringStore, error) {
+	fileDir, err := defaultFileDir()
+	if err != nil {
+		return nil, err
+	}
 	ring, err := keyring.Open(keyring.Config{
 		ServiceName:              "monarch-cli",
 		AllowedBackends:          []keyring.BackendType{keyring.KeychainBackend, keyring.SecretServiceBackend, keyring.KWalletBackend, keyring.WinCredBackend, keyring.PassBackend, keyring.FileBackend},
-		FileDir:                  "",
-		FilePasswordFunc:         nil,
+		FileDir:                  fileDir,
+		FilePasswordFunc:         filePasswordFunc(fileDir),
 		KeychainTrustApplication: true,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("open keyring: %w", err)
 	}
 	return &KeyringStore{ring: ring}, nil
+}
+
+func defaultFileDir() (string, error) {
+	dir, err := os.UserConfigDir()
+	if err != nil {
+		return "", fmt.Errorf("resolve config dir: %w", err)
+	}
+	return filepath.Join(dir, "monarch", "keyring"), nil
+}
+
+func filePasswordFunc(fileDir string) keyring.PromptFunc {
+	return func(_ string) (string, error) {
+		if value := os.Getenv("MONARCH_KEYRING_PASSWORD"); value != "" {
+			return value, nil
+		}
+		hostname, err := os.Hostname()
+		if err != nil {
+			hostname = "unknown-host"
+		}
+		sum := sha256.Sum256([]byte("monarch-cli|" + hostname + "|" + fileDir))
+		return hex.EncodeToString(sum[:]), nil
+	}
 }
 
 func (s *KeyringStore) Get(key string) (string, error) {
