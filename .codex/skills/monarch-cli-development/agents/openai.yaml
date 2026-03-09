@@ -1,4 +1,0 @@
-interface:
-  display_name: "Monarch CLI Dev"
-  short_description: "Develop and extend the Monarch CLI repo"
-  default_prompt: "Use $monarch-cli-development to extend or debug the Monarch Money CLI safely."

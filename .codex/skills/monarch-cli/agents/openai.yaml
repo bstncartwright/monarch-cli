@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monarch CLI"
+  short_description: "Use Monarch Money data from the CLI"
+  default_prompt: "Use $monarch-cli to inspect Monarch Money data safely from the terminal."
