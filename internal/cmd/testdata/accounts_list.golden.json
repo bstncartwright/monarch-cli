@@ -1,0 +1,32 @@
+[
+  {
+    "id": "acct_1",
+    "displayName": "Checking",
+    "currentBalance": 1234.56,
+    "displayLastUpdatedAt": "2026-03-09T00:00:00Z",
+    "includeInNetWorth": true,
+    "hideFromList": false,
+    "hideTransactionsFromReports": false,
+    "isAsset": true,
+    "isHidden": false,
+    "isManual": false,
+    "mask": "1234",
+    "transactionsCount": 42,
+    "holdingsCount": 0,
+    "dataProvider": "plaid",
+    "logoUrl": "",
+    "type": {
+      "name": "depository",
+      "display": "Depository"
+    },
+    "subtype": {
+      "name": "checking",
+      "display": "Checking"
+    },
+    "institution": {
+      "id": "inst_1",
+      "name": "Bank",
+      "url": "https://bank.example.com"
+    }
+  }
+]

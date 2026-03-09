@@ -1,0 +1,11 @@
+{
+  "id": "user_1",
+  "name": "Ada Lovelace",
+  "displayName": "Ada",
+  "email": "ada@example.com",
+  "hasMfaOn": true,
+  "hasPassword": true,
+  "householdRole": "owner",
+  "createdAt": "2026-03-09T00:00:00Z",
+  "timezone": "America/Denver"
+}
